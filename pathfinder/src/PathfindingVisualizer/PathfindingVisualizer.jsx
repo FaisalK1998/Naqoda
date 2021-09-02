@@ -204,3 +204,57 @@ export default class PathfindingVisualizer extends Component {
         }
         return true;
     }
+
+    /**
+     * This method handles the mouse event for setting start and finish nodes
+     * @param {*} row 
+     * @param {*} col 
+     */
+    handleMouseEnter(row, col) {
+        //Checks if the program is running
+        if (!this.state.isRunning) {
+            //Check if the mouse has been pressed, if so, get the row and column ID's
+            if (this.state.mouseIsPressed) {const nodeClassName = document.getElementById(`node-${row}-${col}`).className;
+                if (this.state.isStartNode) {
+                    if (nodeClassName !== 'node node-wall') {
+                        const prevStartNode = this.state.grid[this.state.currRow][
+                        this.state.currCol
+                        ];
+                        prevStartNode.isStart = false;
+                        document.getElementById(
+                        `node-${this.state.currRow}-${this.state.currCol}`,
+                        ).className = 'node';
+            
+                        this.setState({currRow: row, currCol: col});
+                        const currStartNode = this.state.grid[row][col];
+                        currStartNode.isStart = true;
+                        document.getElementById(`node-${row}-${col}`).className =
+                        'node node-start';
+                    }
+                    //Sets the start node row and column
+                    this.setState({START_NODE_ROW: row, START_NODE_COL: col});
+                } else if (this.state.isFinishNode) {
+                    if (nodeClassName !== 'node node-wall') {
+                        const prevFinishNode = this.state.grid[this.state.currRow][
+                        this.state.currCol
+                        ];
+                        prevFinishNode.isFinish = false;
+                        document.getElementById(
+                        `node-${this.state.currRow}-${this.state.currCol}`,
+                        ).className = 'node';
+            
+                        this.setState({currRow: row, currCol: col});
+                        const currFinishNode = this.state.grid[row][col];
+                        currFinishNode.isFinish = true;
+                        document.getElementById(`node-${row}-${col}`).className =
+                        'node node-finish';
+                    }
+                    //Sets the finish node row and column
+                    this.setState({FINISH_NODE_ROW: row, FINISH_NODE_COL: col});
+                } else if (this.state.isWallNode) {
+                    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+                    this.setState({grid: newGrid});
+                }
+            }
+        }
+    }
