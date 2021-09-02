@@ -89,7 +89,6 @@ export default class PathfindingVisualizer extends Component {
     }
 
     /**
-     * 
      *  Set up the Initial Grid
      */
 
@@ -138,3 +137,51 @@ export default class PathfindingVisualizer extends Component {
         isNode: true,
         };
     };
+
+    /**
+     * Control Mouse Events
+     */
+
+    /**
+     * This method handles the event of when the mouse is moved down
+     * @param {*} row 
+     * @param {*} col 
+     */
+    handleMouseDown(row, col) {
+        //Checks if the program is running 
+        if (!this.state.isRunning) {
+            //If running, check if the grid is clear
+            if (this.isGridClear()) {
+                //Gets the start node element
+                if (document.getElementById(`node-${row}-${col}`).className === 'node node-start') {
+                    this.setState({
+                        mouseIsPressed: true,
+                        isStartNode: true,
+                        currRow: row,
+                        currCol: col,
+                    });
+                //Gets the finish node element
+                } else if (document.getElementById(`node-${row}-${col}`).className === 'node node-finish') {
+                    this.setState({
+                        mouseIsPressed: true,
+                        isFinishNode: true,
+                        currRow: row,
+                        currCol: col,
+                    });
+                } else {
+                    //Gets new grid with wall toggled
+                    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+                    this.setState({
+                        grid: newGrid,
+                        mouseIsPressed: true,
+                        isWallNode: true,
+                        currRow: row,
+                        currCol: col,
+                    });
+                }
+            } else {
+                //Clear the grid
+                this.clearGrid();
+            }
+        }
+    }
