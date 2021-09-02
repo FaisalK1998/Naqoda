@@ -185,3 +185,22 @@ export default class PathfindingVisualizer extends Component {
             }
         }
     }
+
+    /**
+     * This method checks if the Grid is cleared
+     * @returns true if cleared
+     */
+    isGridClear() {
+        for (const row of this.state.grid) {
+            //Gets the node row and column via its ID
+            for (const node of row) {const nodeClassName = document.getElementById(`node-${node.row}-${node.col}`,).className;
+                if (
+                    nodeClassName === 'node node-visited' ||
+                    nodeClassName === 'node node-shortest-path'
+                ) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
