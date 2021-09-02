@@ -258,3 +258,47 @@ export default class PathfindingVisualizer extends Component {
             }
         }
     }
+    
+    /**
+     * This method handles the event of when the mouse is moved up
+     * @param {*} row 
+     * @param {*} col 
+     */
+    handleMouseUp(row, col) {
+        //Checks if the program is running
+        if (!this.state.isRunning) {
+            //Sets the boolean property to false
+            this.setState({mouseIsPressed: false});
+            //Checks if their is a start node
+            if (this.state.isStartNode) {
+                const isStartNode = !this.state.isStartNode;
+                this.setState({isStartNode, START_NODE_ROW: row, START_NODE_COL: col});
+            //Checks if their is a finish node
+            } else if (this.state.isFinishNode) {
+                const isFinishNode = !this.state.isFinishNode;
+                this.setState({isFinishNode, FINISH_NODE_ROW: row, FINISH_NODE_COL: col,
+                });
+            }
+          this.getInitialGrid();
+        }
+    }
+    
+    /**
+     * This method handles the event of when the mouse has left the element
+     */
+    handleMouseLeave() {
+        //Checks if their is a start node
+        if (this.state.isStartNode) {
+            const isStartNode = !this.state.isStartNode;
+            this.setState({isStartNode, mouseIsPressed: false});
+        //Checks if their is a finish node    
+        } else if (this.state.isFinishNode) {
+            const isFinishNode = !this.state.isFinishNode;
+            this.setState({isFinishNode, mouseIsPressed: false});
+        //Checks if their is wall nodes    
+        } else if (this.state.isWallNode) {
+            const isWallNode = !this.state.isWallNode;
+            this.setState({isWallNode, mouseIsPressed: false});
+            this.getInitialGrid();
+        }
+    }
