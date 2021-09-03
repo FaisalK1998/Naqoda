@@ -302,3 +302,81 @@ export default class PathfindingVisualizer extends Component {
             this.getInitialGrid();
         }
     }
+
+    /**
+     * Clear the Grid
+     */
+
+    /**
+     * This method clears the grid once a path has been found
+     */
+    clearGrid() {
+        //Checks if the program is running
+        if (!this.state.isRunning) {
+            //The slice() method returns a copy of a section of an array.
+            const newGrid = this.state.grid.slice();
+            for (const row of newGrid) {
+                for (const node of row) {
+                    let nodeClassName = document.getElementById(`node-${node.row}-${node.col}`,).className;
+                    //Checks if the nodeClassName object is not equal value or type
+                    if (
+                        nodeClassName !== 'node node-start' &&
+                        nodeClassName !== 'node node-finish' &&
+                        nodeClassName !== 'node node-wall'
+                    ) {
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node';
+                        node.isVisited = false;
+                        node.distance = Infinity;
+                        node.distanceToFinishNode =
+                        Math.abs(this.state.FINISH_NODE_ROW - node.row) +
+                        Math.abs(this.state.FINISH_NODE_COL - node.col);
+                    }
+                    /**
+                     * If nodeClassName has equal values and types then set isVisited to false,
+                     * In order to clear the grid
+                    */
+                    if (nodeClassName === 'node node-finish') {
+                        node.isVisited = false;
+                        node.distance = Infinity;
+                        node.distanceToFinishNode = 0;
+                    }
+                    if (nodeClassName === 'node node-start') {
+                        node.isVisited = false;
+                        node.distance = Infinity;
+                        node.distanceToFinishNode =
+                        Math.abs(this.state.FINISH_NODE_ROW - node.row) +
+                        Math.abs(this.state.FINISH_NODE_COL - node.col);
+                        node.isStart = true;
+                        node.isWall = false;
+                        node.previousNode = null;
+                        node.isNode = true;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Clear Walls from Grid
+     */
+
+    /**
+     * This method allows the user to clear walls that have been drawn on the grid
+     */
+    clearWalls() {
+        //Checks if the program is running
+        if (!this.state.isRunning) {
+            const newGrid = this.state.grid.slice();
+            for (const row of newGrid) {
+                    for (const node of row) {
+                    let nodeClassName = document.getElementById(`node-${node.row}-${node.col}`,).className;
+                    //Sets isWall to false in order to clear walls
+                    if (nodeClassName === 'node node-wall') {
+                        document.getElementById(`node-${node.row}-${node.col}`).className =
+                        'node';
+                        node.isWall = false;
+                    }
+                }
+            }
+        }
+    }
