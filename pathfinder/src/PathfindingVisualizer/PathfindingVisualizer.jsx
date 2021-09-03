@@ -477,3 +477,90 @@ export default class PathfindingVisualizer extends Component {
             }
         }
     }
+    /**
+     * This render method renders the html markup for the pathfinder
+     * @returns web page
+     */
+    render() {
+        const {grid, mouseIsPressed} = this.state;
+        return (
+          <div>
+            <h1 className="display-4">
+              <b>Pathfinding Visualiser</b>
+            </h1>
+    
+            <table
+              className="grid-container"
+              onMouseLeave={() => this.handleMouseLeave()}>
+              <tbody className="grid">
+                {grid.map((row, rowIdx) => {
+                  return (
+                    <tr key={rowIdx}>
+                      {row.map((node, nodeIdx) => {
+                        const {row, col, isFinish, isStart, isWall} = node;
+                        return (
+                          <Node
+                            key={nodeIdx}
+                            col={col}
+                            isFinish={isFinish}
+                            isStart={isStart}
+                            isWall={isWall}
+                            mouseIsPressed={mouseIsPressed}
+                            onMouseDown={(row, col) =>
+                              this.handleMouseDown(row, col)
+                            }
+                            onMouseEnter={(row, col) =>
+                              this.handleMouseEnter(row, col)
+                            }
+                            onMouseUp={() => this.handleMouseUp(row, col)}
+                            row={row}></Node>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <button
+              type="button"
+              className="btn btn-danger btn-lg"
+              onClick={() => this.clearGrid()}>
+              Clear Grid
+            </button>
+            <button
+              type="button"
+              className="btn btn-warning btn-lg"
+              onClick={() => this.clearWalls()}>
+              Clear Walls
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => this.visualize('Dijkstra')}>
+              Dijkstra's
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => this.visualize('AStar')}>
+              A*
+            </button>
+            {this.state.isDesktopView ? (
+              <button
+                type="button"
+                className="btn btn-light btn-lg"
+                onClick={() => this.toggleView()}>
+                Small Grid
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-dark btn-lg"
+                onClick={() => this.toggleView()}>
+                Large Grid
+              </button>
+            )}
+          </div>
+        );
+      }
+    }
