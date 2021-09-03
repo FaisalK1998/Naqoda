@@ -477,6 +477,7 @@ export default class PathfindingVisualizer extends Component {
             }
         }
     }
+
     /**
      * This render method renders the html markup for the pathfinder
      * @returns web page
@@ -563,4 +564,47 @@ export default class PathfindingVisualizer extends Component {
           </div>
         );
       }
+    }
+
+    /**
+     * Create Walls
+     */
+
+    /**
+     * This method allows the user to create walls
+     * @param {*} grid 
+     * @param {*} row 
+     * @param {*} col 
+     * @returns newGrid with walls
+     */
+    const getNewGridWithWallToggled = (grid, row, col) => {
+        const newGrid = grid.slice();
+        const node = newGrid[row][col];
+            if (!node.isStart && !node.isFinish && node.isNode) {
+            const newNode = {
+                ...node,
+                isWall: !node.isWall,
+            };
+            newGrid[row][col] = newNode;
+        }
+        return newGrid;
+    };
+  
+    /**
+     * This method retrieves nodes in the shortest path order.
+     * Backtracks from the finishNode to find the shortest path
+     * Only works when called after the pathfinding methods.
+     * @param {*} finishNode 
+     * @returns nodesInShortestPathOrder
+     */
+    function getNodesInShortestPathOrder(finishNode) {
+        const nodesInShortestPathOrder = [];
+        let currentNode = finishNode;
+            //While loop checks if the currentNode is not equal to null
+            while (currentNode !== null) {
+                //the unshift() method inserts new elements at the start of an array, and returns the new length of the array.
+                nodesInShortestPathOrder.unshift(currentNode);
+                currentNode = currentNode.previousNode;
+            }
+        return nodesInShortestPathOrder;
     }
