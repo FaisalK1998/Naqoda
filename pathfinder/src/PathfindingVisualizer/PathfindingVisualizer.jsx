@@ -420,8 +420,7 @@ export default class PathfindingVisualizer extends Component {
     }
 
     /**
-     * This method animates the visited nodes in order as well as animating
-     * the shortest path. This is done with CSS
+     * This method animates the visited nodes in order
      * @param {*} visitedNodesInOrder 
      * @param {*} nodesInShortestPathOrder 
      * @returns visitedNodesInOrder
@@ -445,5 +444,36 @@ export default class PathfindingVisualizer extends Component {
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
             }
             }, 10 * i);
+        }
+    }
+
+    /**
+     * Create a path from start to finish
+     */
+
+    /**
+     * This method animates the shortest path from the start to finish with the use
+     * of CSS
+     * @param {*} nodesInShortestPathOrder 
+     */
+    animateShortestPath(nodesInShortestPathOrder) {
+        for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+            if (nodesInShortestPathOrder[i] === 'end') {
+                setTimeout(() => {
+                this.toggleIsRunning();
+                }, i * 50);
+            } else {
+                setTimeout(() => {
+                const node = nodesInShortestPathOrder[i];
+                const nodeClassName = document.getElementById(`node-${node.row}-${node.col}`,).className;
+                    if (
+                        nodeClassName !== 'node node-start' &&
+                        nodeClassName !== 'node node-finish'
+                    ) {
+                        document.getElementById(`node-${node.row}-${node.col}`).className =
+                        'node node-shortest-path';
+                    }
+                }, i * 40);
+            }
         }
     }
