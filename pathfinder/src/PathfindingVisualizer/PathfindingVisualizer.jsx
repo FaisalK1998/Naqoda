@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
+import Node from './Node/Node';
 import {AStar} from '../algorithms/aStar';
+import {dijkstra} from '../algorithms/dijkstra';
 import './PathfindingVisualizer.css';
 
 /**
