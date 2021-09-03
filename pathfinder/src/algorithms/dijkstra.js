@@ -31,15 +31,32 @@ export function dijkstra(grid, startNode, finishNode) {
                 updateUnvisitedNeighbors(closestNode, grid);
             }
         }
-  }
-  
-  function getAllNodes(grid) {
+    }
 
-  }
+    /**
+     * This function is used to get all nodes 
+     * @param {*} grid 
+     * @returns nodes
+     */
+    function getAllNodes(grid) {
+        const nodes = [];
+            //The push() method appends new elements to the end of an array, and returns the new length of the array.
+            for (const row of grid) {
+                for (const node of row) {
+                nodes.push(node);
+            }
+        }
+        return nodes;
+    }
   
-  function sortNodesByDistance(unvisitedNodes) {
-
-  }
+    /**
+     * This function sorts unvisited nodes by distance
+     * @param {*} unvisitedNodes 
+     */
+    function sortNodesByDistance(unvisitedNodes) {
+        //Simple calculation to figure the distance from node A to B
+        unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+    }
   
   function updateUnvisitedNeighbors(node, grid) {
 
