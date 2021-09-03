@@ -380,3 +380,70 @@ export default class PathfindingVisualizer extends Component {
             }
         }
     }
+
+    /**
+    * Create Grid Animations
+    */
+
+    /**
+     * This method determines which algorithm to visualise
+     * @param {*} algo 
+     */
+    visualize(algo) {
+        if (!this.state.isRunning) {
+            this.clearGrid();
+            this.toggleIsRunning();
+            const {grid} = this.state;
+            //Sets the start node row and column to the variable startNode
+            const startNode =
+                grid[this.state.START_NODE_ROW][this.state.START_NODE_COL];
+            //Sets the finish node row and column to the variable finishNode
+            const finishNode =
+                grid[this.state.FINISH_NODE_ROW][this.state.FINISH_NODE_COL];
+            let visitedNodesInOrder;
+                //Switch case statement used in order to determine which block of code is to be executed
+                switch (algo) {
+                    case 'Dijkstra':
+                    visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+                    break;
+                    case 'AStar':
+                    visitedNodesInOrder = AStar(grid, startNode, finishNode);
+                    break;
+                    default:
+                    // should never get here
+                    break;
+                }
+            const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+            nodesInShortestPathOrder.push('end');
+            this.animate(visitedNodesInOrder, nodesInShortestPathOrder);
+        }
+    }
+
+    /**
+     * This method animates the visited nodes in order as well as animating
+     * the shortest path. This is done with CSS
+     * @param {*} visitedNodesInOrder 
+     * @param {*} nodesInShortestPathOrder 
+     * @returns visitedNodesInOrder
+     */
+    animate(visitedNodesInOrder, nodesInShortestPathOrder) {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            if (i === visitedNodesInOrder.length) {
+                //The setTimeout() method calls a function or evaluates an expression after a specified number of milliseconds
+                setTimeout(() => {
+                this.animateShortestPath(nodesInShortestPathOrder);
+                }, 10 * i);
+                return;
+            }
+            setTimeout(() => {
+            const node = visitedNodesInOrder[i];
+            const nodeClassName = document.getElementById(`node-${node.row}-${node.col}`,).className;
+            if (
+                nodeClassName !== 'node node-start' &&
+                nodeClassName !== 'node node-finish'
+            ) {
+                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+            }
+            }, 10 * i);
+        }
+    }
